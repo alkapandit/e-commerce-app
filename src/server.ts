@@ -1,8 +1,9 @@
+import "dotenv/config";
+import app from "./app";
 import pool from "./common/config/db";
-import express from "express";
+import { env } from "./common/config/env";
 
-const app = express();
-const PORT = 3000;
+const PORT = env.port;
 
 // Server start
 const startServer = async () => {
