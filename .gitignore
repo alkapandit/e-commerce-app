@@ -4,6 +4,7 @@ package-lock.json
 
 .env
 .env.local
-.env.development
+.env.dev
+.env.uat/sit
+.env.prod
 .env.test
-.env.production
