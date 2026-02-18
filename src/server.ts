@@ -11,16 +11,6 @@ const startServer = async () => {
     await prisma.$connect();
     console.log("✅ Database Connected (Prisma)");
 
-    // // Example DB operation (remove later if not needed)
-    // const user = await prisma.user.create({
-    //   data: {
-    //     email: "pankajbarman000@gmail.com",
-    //     name: "Pankaj Barman",
-    //   },
-    // });
-
-    // console.log("👤 User created:", user);
-
     app.listen(PORT, () => {
       console.log(`🚀 Server running on http://localhost:${PORT}`);
     });
