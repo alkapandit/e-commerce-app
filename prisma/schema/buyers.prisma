@@ -1,14 +1,14 @@
 model Buyer {
-    id String @id @default(uuid()) @db.Uuid
-    userId String @unique @map("user_id")
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-    
-    defaultShippingAddressId String @map("default_shipping_address_id")
-    walletBalance Decimal @default(0) @map("wallet_balance")
-    preferredPaymentMethod String @map("preffered_payment_method")
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @unique @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
+  defaultShippingAddressId String  @map("default_shipping_address_id")
+  walletBalance            Decimal @default(0) @map("wallet_balance")
+  preferredPaymentMethod   String  @map("preffered_payment_method")
 
-    @@map("buyers")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("buyers")
 }

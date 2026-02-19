@@ -29,7 +29,11 @@ model User {
   createdAt   DateTime   @default(now()) @map("created_at")
   updatedAt   DateTime   @updatedAt @map("updated_at")
 
-  orders Order[]
+  buyer  Buyer?
+  seller Seller?
+
+  orders    Order[]
+  addresses Address[]
 
   @@map("users")
 }

@@ -1,31 +1,31 @@
 enum kycStatus {
-    PENDING
-    VERIFIED
-    REJECTED
+  PENDING
+  VERIFIED
+  REJECTED
 }
 
 model Seller {
-    id String @id @default(uuid()) @db.Uuid
+  id String @id @default(uuid()) @db.Uuid
 
-    userId String @unique @map("user_id")
-    user User @relation(fields: [userId],references: [id], onDelete: Cascade )
+  userId String @unique @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    storeName String @map("strore_name")
-    storeDescription String? @map("store_description")
+  storeName        String  @map("strore_name")
+  storeDescription String? @map("store_description")
 
-    gstNumber String @map("gst_number")
-    panNumber String @map("pan_number")
+  gstNumber String @map("gst_number")
+  panNumber String @map("pan_number")
 
-    bankAccountNumber String @map("bank_account_number")
-    bankIfsc String @map("bank_ifsc")
+  bankAccountNumber String @map("bank_account_number")
+  bankIfsc          String @map("bank_ifsc")
 
-    kycStatus kycStatus @default(PENDING) @map("kyc_status")
+  kycStatus kycStatus @default(PENDING) @map("kyc_status")
 
-    rating Decimal @default(0)
-    totalSales Int @default(0) @map("total_sales")
+  rating     Decimal @default(0)
+  totalSales Int     @default(0) @map("total_sales")
 
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-    @@map("sellers")
+  @@map("sellers")
 }
