@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 export const register = async (data: BuyerRegisterInput) => {
   const { email, firstName, lastName, password, phone } = data;
 
-  if (email || firstName || lastName || password || phone) {
+  if (!email || !firstName || !lastName || !password || !phone) {
     throw new ApiError(HTTP_STATUS?.BAD_REQUEST, "All fields are mandatory!");
   }
 
@@ -17,7 +17,7 @@ export const register = async (data: BuyerRegisterInput) => {
     },
   });
 
-  if (!isUserExisting) {
+  if (isUserExisting) {
     throw new ApiError(409, "User with email or phone number already exists!");
   }
 
