@@ -20,7 +20,7 @@ model User {
   firstName String?
   lastName  String?
 
-  role            UserRole
+  role            UserRole @default(BUYER)
   isEmailVerified Boolean  @default(false) @map("is_email_verified")
   isPhoneVerified Boolean  @default(false) @map("is_phone_verified")
 
