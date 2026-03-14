@@ -11,9 +11,6 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const user = await AuthService.register(req?.body);
-  if (!user) {
-    throw new ApiError(500, "Internal Server Error!");
-  }
 
   sendResponse({
     res,
@@ -21,5 +18,21 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     success: true,
     statusCode: HTTP_STATUS.CREATED,
     message: "User Registered Successfully!",
+  });
+});
+
+export const login = asyncHandler(async (req: Request, res: Response) => {
+  if (!req?.body) {
+    throw new ApiError(400, "Invalid request body!");
+  }
+
+  const user = await AuthService.login(req?.body);
+
+  sendResponse({
+    res,
+    data: user,
+    success: true,
+    statusCode: HTTP_STATUS.OK,
+    message: "User loggedin successfully!",
   });
 });

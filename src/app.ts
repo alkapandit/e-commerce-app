@@ -1,6 +1,6 @@
 import express from "express";
-import { ROUTES } from "./constants/route.constant";
 import authRoutes from "./modules/auth/auth.routes";
+import { ROUTES } from "./constants/route.constant";
 import { errorHandler } from "./common/middlewares/errorHandler.middleware";
 
 const app = express();

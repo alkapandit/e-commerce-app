@@ -5,3 +5,8 @@ export type BuyerRegisterInput = {
   email: string;
   password: string;
 };
+
+export type BuyerLoginInput = {
+  identifier: string;
+  password: string;
+};
