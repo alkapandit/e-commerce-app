@@ -28,6 +28,23 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 
   const user = await AuthService.login(req?.body);
 
+  const { accessToken, refreshToken } = user;
+  const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict" as const,
+  };
+
+  res.cookie("accessToken", accessToken, {
+    ...cookieOptions,
+    maxAge: 15 * 60 * 1000,
+  });
+
+  res.cookie("refreshToken", refreshToken, {
+    ...cookieOptions,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
   sendResponse({
     res,
     data: user,
