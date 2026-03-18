@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 import {
   generateAccessToken,
@@ -7,7 +8,11 @@ import {
 import prisma from "../../common/config/prisma";
 import { ApiError } from "../../common/utils/apiError.util";
 import { HTTP_STATUS } from "../../constants/httpStatus.constant";
-import { BuyerLoginInput, BuyerRegisterInput } from "./auth.types";
+import {
+  BuyerLoginInput,
+  BuyerRegisterInput,
+  RefreshAccessTokenInput,
+} from "./auth.types";
 
 export const register = async (data: BuyerRegisterInput) => {
   const { email, firstName, lastName, password, phone } = data;
@@ -81,8 +86,8 @@ export const login = async (data: BuyerLoginInput) => {
       throw new ApiError(401, "Invalid user credential!");
     }
 
-    const accessToken = generateAccessToken(user?.id, user?.role);
-    const refreshToken = generateRefreshToken(user?.id, user?.role);
+    const accessToken = generateAccessToken(user?.id);
+    const refreshToken = generateRefreshToken(user?.id);
 
     if (!accessToken || !refreshToken) {
       throw new ApiError(500, "Error in generating refresh and access token!");
@@ -110,7 +115,26 @@ export const login = async (data: BuyerLoginInput) => {
 
 export const logout = async (userId: string) => {};
 
-export const refreshToken = async (token: string) => {};
+export const refreshToken = async (data: RefreshAccessTokenInput) => {
+  const { refreshToken } = data;
+  if (!refreshToken) {
+    throw new ApiError(400, "Refresh token is required!");
+  }
+
+  try {
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET!,
+    ) as { userId: string };
+
+    const newAccessToken = generateAccessToken(decoded?.userId);
+
+    return newAccessToken;
+  } catch (error) {
+    console.error("Error in refreshing access token!");
+    throw new ApiError(500, "Falied to refresh token!");
+  }
+};
 
 export const verifyEmail = async (token: string) => {};
 

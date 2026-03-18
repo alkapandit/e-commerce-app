@@ -10,3 +10,7 @@ export type BuyerLoginInput = {
   identifier: string;
   password: string;
 };
+
+export type RefreshAccessTokenInput = {
+  refreshToken: string;
+};
