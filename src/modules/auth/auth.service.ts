@@ -65,14 +65,19 @@ export const register = async (data: BuyerRegisterInput) => {
 export const login = async (data: BuyerLoginInput) => {
   const { identifier, password } = data;
 
-  if (!identifier || !password) {
+  const identifierTrimmed = identifier?.trim();
+
+  if (!identifierTrimmed || !password) {
     throw new ApiError(400, "All fields are required!");
   }
 
   try {
     const user = await prisma.user.findFirst({
       where: {
-        OR: [{ email: identifier }, { phone: identifier }],
+        OR: [
+          { email: { equals: identifierTrimmed, mode: "insensitive" } },
+          { phone: identifierTrimmed },
+        ],
       },
     });
 
@@ -109,6 +114,11 @@ export const login = async (data: BuyerLoginInput) => {
     };
   } catch (error: any) {
     console.error("error in updating refresh token: ", error);
+
+    if (error instanceof ApiError) {
+      throw error; // ✅ preserve real error
+    }
+
     throw new ApiError(500, "Failed to login user!");
   }
 };
