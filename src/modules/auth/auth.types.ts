@@ -1,12 +1,13 @@
-export type BuyerRegisterInput = {
+export type RegisterInput = {
   firstName: string;
   lastName: string;
   phone: string;
   email: string;
   password: string;
+  userType: string;
 };
 
-export type BuyerLoginInput = {
+export type LoginInput = {
   identifier: string;
   password: string;
 };

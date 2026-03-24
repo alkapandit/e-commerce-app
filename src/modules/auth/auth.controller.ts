@@ -77,6 +77,10 @@ export const verifyEmail = asyncHandler(
   async (req: Request, res: Response) => {},
 );
 
+export const verifyPhone = asyncHandler(
+  async (req: Request, res: Response) => {},
+);
+
 export const forgotPassword = asyncHandler(
   async (req: Request, res: Response) => {},
 );

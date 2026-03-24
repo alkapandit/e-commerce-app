@@ -9,15 +9,15 @@ import prisma from "../../common/config/prisma";
 import { ApiError } from "../../common/utils/apiError.util";
 import { HTTP_STATUS } from "../../constants/httpStatus.constant";
 import {
-  BuyerLoginInput,
-  BuyerRegisterInput,
+  LoginInput,
+  RegisterInput,
   RefreshAccessTokenInput,
 } from "./auth.types";
 
-export const register = async (data: BuyerRegisterInput) => {
-  const { email, firstName, lastName, password, phone } = data;
+export const register = async (data: RegisterInput) => {
+  const { email, firstName, lastName, password, phone, userType } = data;
 
-  if (!email || !firstName || !lastName || !password || !phone) {
+  if (!email || !firstName || !lastName || !password || !phone || !userType) {
     throw new ApiError(HTTP_STATUS?.BAD_REQUEST, "All fields are mandatory!");
   }
 
@@ -44,7 +44,7 @@ export const register = async (data: BuyerRegisterInput) => {
         lastName,
         phone,
         passwordHash,
-        role: "BUYER",
+        role: userType?.toLocaleLowerCase() === "seller" ? "SELLER" : "BUYER",
       },
       select: {
         firstName: true,
@@ -62,7 +62,7 @@ export const register = async (data: BuyerRegisterInput) => {
   }
 };
 
-export const login = async (data: BuyerLoginInput) => {
+export const login = async (data: LoginInput) => {
   const { identifier, password } = data;
 
   const identifierTrimmed = identifier?.trim();
@@ -147,6 +147,8 @@ export const refreshToken = async (data: RefreshAccessTokenInput) => {
 };
 
 export const verifyEmail = async (token: string) => {};
+
+export const verifyPhone = async (token: string) => {};
 
 export const forgotPassword = async (email: string) => {};
 
