@@ -4,25 +4,35 @@ enum kycStatus {
   REJECTED
 }
 
+enum SignatureType {
+  DRAWN
+  TYPED
+}
+
 model Seller {
   id String @id @default(uuid()) @db.Uuid
 
   userId String @unique @map("user_id") @db.Uuid
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  storeName        String  @map("strore_name")
+  storeName        String?  @map("strore_name")
   storeDescription String? @map("store_description")
 
-  gstNumber String @map("gst_number")
-  panNumber String @map("pan_number")
+  gstNumber String? @map("gst_number")
+  panNumber String? @map("pan_number")
 
-  bankAccountNumber String @map("bank_account_number")
-  bankIfsc          String @map("bank_ifsc")
+  bankAccountNumber String? @map("bank_account_number")
+  bankIfsc          String? @map("bank_ifsc")
 
-  kycStatus kycStatus @default(PENDING) @map("kyc_status")
+  kycStatus kycStatus? @default(PENDING) @map("kyc_status")
 
-  rating     Decimal @default(0)
-  totalSales Int     @default(0) @map("total_sales")
+  signatureType SignatureType? @map("signature_type")
+  signatureUrl  String?        @map("signature_url")
+  signatureText String?        @map("signature_text")
+  signedAt      DateTime?      @map("signed_at")
+
+  rating     Decimal? @default(0)
+  totalSales Int?     @default(0) @map("total_sales")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
