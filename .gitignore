@@ -10,7 +10,7 @@ package-lock.json
 .env.test
 
 # Ignore auto-generated Prisma client files
-/src/generated/prisma
+# /src/generated/prisma
 
 # Ensure migrations are committed
 !/prisma/migrations
