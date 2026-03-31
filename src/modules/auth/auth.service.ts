@@ -146,9 +146,53 @@ export const refreshToken = async (data: RefreshAccessTokenInput) => {
   }
 };
 
-export const verifyEmail = async (token: string) => {};
+export const sendEmailOtp = async (token: string) => {};
 
-export const verifyPhone = async (token: string) => {};
+export const verifyEmailOtp = async (email: string, otp: string) => {
+  const user = await prisma.user.findUnique({ where: { email } });
+
+  if (!user || user?.email !== email) {
+    throw new ApiError(400, "Invalid OTP!");
+  }
+  if (!user?.createdAt || user?.createdAt < new Date()) {
+    throw new ApiError(400, "OTP Expired!");
+  }
+
+  const result = await prisma.user.update({
+    where: { email },
+    data: {
+      isEmailVerified: true,
+      // emailOtp:null,
+      // emailOtpExpiry: null,
+    },
+  });
+
+  return result;
+};
+
+export const sendPhoneOtp = async (token: string) => {};
+
+export const verifyPhoneOtp = async (phone: string, otp: string) => {
+  const user = await prisma.user.findFirst({ where: { phone } });
+
+  if (!user || user?.phone !== phone) {
+    throw new ApiError(400, "Invalid OTP!");
+  }
+  if (!user?.createdAt || user?.createdAt < new Date()) {
+    throw new ApiError(400, "OTP Expired!");
+  }
+
+  const result = await prisma.user.update({
+    where: { id: user?.id },
+    data: {
+      isEmailVerified: true,
+      // phoneOtp:null,
+      // phoneOtpExpiry: null,
+    },
+  });
+
+  return result;
+};
 
 export const forgotPassword = async (email: string) => {};
 

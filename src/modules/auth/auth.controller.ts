@@ -60,12 +60,62 @@ export const refreshToken = asyncHandler(
   },
 );
 
-export const verifyEmail = asyncHandler(
-  async (req: Request, res: Response) => {},
+export const sendEmailOtp = asyncHandler(
+  async (req: Request, res: Response) => {
+    const otpRes = await AuthService.sendEmailOtp(req.body.email);
+    sendResponse({
+      res,
+      data: null,
+      success: true,
+      statusCode: HTTP_STATUS.OK,
+      message: "OTP sent successfully.",
+    });
+  },
 );
 
-export const verifyPhone = asyncHandler(
-  async (req: Request, res: Response) => {},
+export const verifyEmailOtp = asyncHandler(
+  async (req: Request, res: Response) => {
+    const verifiedEmail = await AuthService.verifyEmailOtp(
+      req.body.email,
+      req.body.otp,
+    );
+    sendResponse({
+      res,
+      data: null,
+      success: true,
+      statusCode: HTTP_STATUS.OK,
+      message: "Your email id verified successfully.",
+    });
+  },
+);
+
+export const sendPhoneOtp = asyncHandler(
+  async (req: Request, res: Response) => {
+    const otpRes = await AuthService.sendPhoneOtp(req.body.phone);
+    sendResponse({
+      res,
+      data: null,
+      success: true,
+      statusCode: HTTP_STATUS.OK,
+      message: "OTP sent successfully.",
+    });
+  },
+);
+
+export const verifyPhoneOtp = asyncHandler(
+  async (req: Request, res: Response) => {
+    const verifiedPhone = await AuthService.verifyPhoneOtp(
+      req.body.phone,
+      req.body.otp,
+    );
+    sendResponse({
+      res,
+      data: null,
+      success: true,
+      statusCode: HTTP_STATUS.OK,
+      message: "Your phone number verified successfully.",
+    });
+  },
 );
 
 export const forgotPassword = asyncHandler(
