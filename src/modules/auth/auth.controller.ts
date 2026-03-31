@@ -119,9 +119,27 @@ export const verifyPhoneOtp = asyncHandler(
 );
 
 export const forgotPassword = asyncHandler(
-  async (req: Request, res: Response) => {},
+  async (req: Request, res: Response) => {
+    const user = await AuthService.forgotPassword(req.body?.userId, req.body);
+    sendResponse({
+      res,
+      data: user,
+      success: true,
+      statusCode: HTTP_STATUS.OK,
+      message: "Password reset successfully",
+    });
+  },
 );
 
 export const resetPassword = asyncHandler(
-  async (req: Request, res: Response) => {},
+  async (req: Request, res: Response) => {
+    const user = await AuthService.resetPassword(req.body?.userId, req.body);
+    sendResponse({
+      res,
+      data: user,
+      success: true,
+      statusCode: HTTP_STATUS.OK,
+      message: "Password reset successfully",
+    });
+  },
 );

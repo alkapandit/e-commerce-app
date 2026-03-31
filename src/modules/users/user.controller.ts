@@ -27,16 +27,3 @@ export const updateProfile = asyncHandler(
     });
   },
 );
-
-export const forgotPassword = asyncHandler(
-  async (req: Request, res: Response) => {
-    const user = await UserService.forgotPassword(req.body?.userId, req.body);
-    sendResponse({
-      res,
-      data: user,
-      success: true,
-      statusCode: HTTP_STATUS.OK,
-      message: "Password reset successfully",
-    });
-  },
-);

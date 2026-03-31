@@ -194,6 +194,6 @@ export const verifyPhoneOtp = async (phone: string, otp: string) => {
   return result;
 };
 
-export const forgotPassword = async (email: string) => {};
+export const forgotPassword = async (id: string, data: any) => {};
 
-export const resetPassword = async (data: any) => {};
+export const resetPassword = async (id: string, data: any) => {};
