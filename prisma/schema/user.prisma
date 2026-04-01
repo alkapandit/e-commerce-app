@@ -12,18 +12,21 @@ enum UserStatus {
 }
 
 model User {
-  id           String @id @default(uuid()) @db.Uuid
-  email        String @unique
-  passwordHash String @map("password_hash")
+  id           String  @id @default(uuid()) @db.Uuid
+  email        String  @unique
+  passwordHash String  @map("password_hash")
   refreshToken String?
 
-  phone     String?
+  phone     String?  @unique
   firstName String?
   lastName  String?
 
-  role            UserRole @default(BUYER)
-  isEmailVerified Boolean  @default(false) @map("is_email_verified")
-  isPhoneVerified Boolean  @default(false) @map("is_phone_verified")
+  emailOtp        String?
+  phoneOtp        String?
+  otpExpiry       DateTime?
+  role            UserRole  @default(BUYER)
+  isEmailVerified Boolean   @default(false) @map("is_email_verified")
+  isPhoneVerified Boolean   @default(false) @map("is_phone_verified")
 
   status      UserStatus @default(ACTIVE)
   lastLoginAt DateTime?  @map("last_login_at")

@@ -66,6 +66,14 @@ export const kycStatus: {
 export type kycStatus = (typeof kycStatus)[keyof typeof kycStatus]
 
 
+export const SignatureType: {
+  DRAWN: 'DRAWN',
+  TYPED: 'TYPED'
+};
+
+export type SignatureType = (typeof SignatureType)[keyof typeof SignatureType]
+
+
 export const UserRole: {
   BUYER: 'BUYER',
   SELLER: 'SELLER',
@@ -94,6 +102,10 @@ export type kycStatus = $Enums.kycStatus
 
 export const kycStatus: typeof $Enums.kycStatus
 
+export type SignatureType = $Enums.SignatureType
+
+export const SignatureType: typeof $Enums.SignatureType
+
 export type UserRole = $Enums.UserRole
 
 export const UserRole: typeof $Enums.UserRole
@@ -108,7 +120,9 @@ export const UserStatus: typeof $Enums.UserStatus
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
- * const prisma = new PrismaClient()
+ * const prisma = new PrismaClient({
+ *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+ * })
  * // Fetch zero or more Addresses
  * const addresses = await prisma.address.findMany()
  * ```
@@ -129,7 +143,9 @@ export class PrismaClient<
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
-   * const prisma = new PrismaClient()
+   * const prisma = new PrismaClient({
+   *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+   * })
    * // Fetch zero or more Addresses
    * const addresses = await prisma.address.findMany()
    * ```
@@ -209,7 +225,7 @@ export class PrismaClient<
    * ])
    * ```
    * 
-   * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
+   * Read more in our [docs](https://www.prisma.io/docs/orm/prisma-client/queries/transactions).
    */
   $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
 
@@ -328,8 +344,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 7.4.0
-   * Query Engine version: ab56fe763f921d033a6c195e7ddeb3e255bdbb57
+   * Prisma Client JS version: 7.5.0
+   * Query Engine version: 280c870be64f457428992c43c1f6d557fab6e29e
    */
   export type PrismaVersion = {
     client: string
@@ -2345,6 +2361,11 @@ export namespace Prisma {
      * Skip the first `n` Addresses.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Addresses.
+     */
     distinct?: AddressScalarFieldEnum | AddressScalarFieldEnum[]
   }
 
@@ -2743,9 +2764,9 @@ export namespace Prisma {
   export type BuyerGroupByOutputType = {
     id: string
     userId: string
-    defaultShippingAddressId: string
-    walletBalance: Decimal
-    preferredPaymentMethod: string
+    defaultShippingAddressId: string | null
+    walletBalance: Decimal | null
+    preferredPaymentMethod: string | null
     createdAt: Date
     updatedAt: Date
     _count: BuyerCountAggregateOutputType | null
@@ -2831,9 +2852,9 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
-      defaultShippingAddressId: string
-      walletBalance: Prisma.Decimal
-      preferredPaymentMethod: string
+      defaultShippingAddressId: string | null
+      walletBalance: Prisma.Decimal | null
+      preferredPaymentMethod: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["buyer"]>
@@ -3463,6 +3484,11 @@ export namespace Prisma {
      * Skip the first `n` Buyers.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Buyers.
+     */
     distinct?: BuyerScalarFieldEnum | BuyerScalarFieldEnum[]
   }
 
@@ -4542,6 +4568,11 @@ export namespace Prisma {
      * Skip the first `n` Orders.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Orders.
+     */
     distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
   }
 
@@ -5526,6 +5557,11 @@ export namespace Prisma {
      * Skip the first `n` Products.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Products.
+     */
     distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
   }
 
@@ -5748,6 +5784,10 @@ export namespace Prisma {
     bankAccountNumber: string | null
     bankIfsc: string | null
     kycStatus: $Enums.kycStatus | null
+    signatureType: $Enums.SignatureType | null
+    signatureUrl: string | null
+    signatureText: string | null
+    signedAt: Date | null
     rating: Decimal | null
     totalSales: number | null
     createdAt: Date | null
@@ -5764,6 +5804,10 @@ export namespace Prisma {
     bankAccountNumber: string | null
     bankIfsc: string | null
     kycStatus: $Enums.kycStatus | null
+    signatureType: $Enums.SignatureType | null
+    signatureUrl: string | null
+    signatureText: string | null
+    signedAt: Date | null
     rating: Decimal | null
     totalSales: number | null
     createdAt: Date | null
@@ -5780,6 +5824,10 @@ export namespace Prisma {
     bankAccountNumber: number
     bankIfsc: number
     kycStatus: number
+    signatureType: number
+    signatureUrl: number
+    signatureText: number
+    signedAt: number
     rating: number
     totalSales: number
     createdAt: number
@@ -5808,6 +5856,10 @@ export namespace Prisma {
     bankAccountNumber?: true
     bankIfsc?: true
     kycStatus?: true
+    signatureType?: true
+    signatureUrl?: true
+    signatureText?: true
+    signedAt?: true
     rating?: true
     totalSales?: true
     createdAt?: true
@@ -5824,6 +5876,10 @@ export namespace Prisma {
     bankAccountNumber?: true
     bankIfsc?: true
     kycStatus?: true
+    signatureType?: true
+    signatureUrl?: true
+    signatureText?: true
+    signedAt?: true
     rating?: true
     totalSales?: true
     createdAt?: true
@@ -5840,6 +5896,10 @@ export namespace Prisma {
     bankAccountNumber?: true
     bankIfsc?: true
     kycStatus?: true
+    signatureType?: true
+    signatureUrl?: true
+    signatureText?: true
+    signedAt?: true
     rating?: true
     totalSales?: true
     createdAt?: true
@@ -5936,15 +5996,19 @@ export namespace Prisma {
   export type SellerGroupByOutputType = {
     id: string
     userId: string
-    storeName: string
+    storeName: string | null
     storeDescription: string | null
-    gstNumber: string
-    panNumber: string
-    bankAccountNumber: string
-    bankIfsc: string
-    kycStatus: $Enums.kycStatus
-    rating: Decimal
-    totalSales: number
+    gstNumber: string | null
+    panNumber: string | null
+    bankAccountNumber: string | null
+    bankIfsc: string | null
+    kycStatus: $Enums.kycStatus | null
+    signatureType: $Enums.SignatureType | null
+    signatureUrl: string | null
+    signatureText: string | null
+    signedAt: Date | null
+    rating: Decimal | null
+    totalSales: number | null
     createdAt: Date
     updatedAt: Date
     _count: SellerCountAggregateOutputType | null
@@ -5978,6 +6042,10 @@ export namespace Prisma {
     bankAccountNumber?: boolean
     bankIfsc?: boolean
     kycStatus?: boolean
+    signatureType?: boolean
+    signatureUrl?: boolean
+    signatureText?: boolean
+    signedAt?: boolean
     rating?: boolean
     totalSales?: boolean
     createdAt?: boolean
@@ -5995,6 +6063,10 @@ export namespace Prisma {
     bankAccountNumber?: boolean
     bankIfsc?: boolean
     kycStatus?: boolean
+    signatureType?: boolean
+    signatureUrl?: boolean
+    signatureText?: boolean
+    signedAt?: boolean
     rating?: boolean
     totalSales?: boolean
     createdAt?: boolean
@@ -6012,6 +6084,10 @@ export namespace Prisma {
     bankAccountNumber?: boolean
     bankIfsc?: boolean
     kycStatus?: boolean
+    signatureType?: boolean
+    signatureUrl?: boolean
+    signatureText?: boolean
+    signedAt?: boolean
     rating?: boolean
     totalSales?: boolean
     createdAt?: boolean
@@ -6029,13 +6105,17 @@ export namespace Prisma {
     bankAccountNumber?: boolean
     bankIfsc?: boolean
     kycStatus?: boolean
+    signatureType?: boolean
+    signatureUrl?: boolean
+    signatureText?: boolean
+    signedAt?: boolean
     rating?: boolean
     totalSales?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type SellerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "storeName" | "storeDescription" | "gstNumber" | "panNumber" | "bankAccountNumber" | "bankIfsc" | "kycStatus" | "rating" | "totalSales" | "createdAt" | "updatedAt", ExtArgs["result"]["seller"]>
+  export type SellerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "storeName" | "storeDescription" | "gstNumber" | "panNumber" | "bankAccountNumber" | "bankIfsc" | "kycStatus" | "signatureType" | "signatureUrl" | "signatureText" | "signedAt" | "rating" | "totalSales" | "createdAt" | "updatedAt", ExtArgs["result"]["seller"]>
   export type SellerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -6054,15 +6134,19 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
-      storeName: string
+      storeName: string | null
       storeDescription: string | null
-      gstNumber: string
-      panNumber: string
-      bankAccountNumber: string
-      bankIfsc: string
-      kycStatus: $Enums.kycStatus
-      rating: Prisma.Decimal
-      totalSales: number
+      gstNumber: string | null
+      panNumber: string | null
+      bankAccountNumber: string | null
+      bankIfsc: string | null
+      kycStatus: $Enums.kycStatus | null
+      signatureType: $Enums.SignatureType | null
+      signatureUrl: string | null
+      signatureText: string | null
+      signedAt: Date | null
+      rating: Prisma.Decimal | null
+      totalSales: number | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["seller"]>
@@ -6498,6 +6582,10 @@ export namespace Prisma {
     readonly bankAccountNumber: FieldRef<"Seller", 'String'>
     readonly bankIfsc: FieldRef<"Seller", 'String'>
     readonly kycStatus: FieldRef<"Seller", 'kycStatus'>
+    readonly signatureType: FieldRef<"Seller", 'SignatureType'>
+    readonly signatureUrl: FieldRef<"Seller", 'String'>
+    readonly signatureText: FieldRef<"Seller", 'String'>
+    readonly signedAt: FieldRef<"Seller", 'DateTime'>
     readonly rating: FieldRef<"Seller", 'Decimal'>
     readonly totalSales: FieldRef<"Seller", 'Int'>
     readonly createdAt: FieldRef<"Seller", 'DateTime'>
@@ -6698,6 +6786,11 @@ export namespace Prisma {
      * Skip the first `n` Sellers.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sellers.
+     */
     distinct?: SellerScalarFieldEnum | SellerScalarFieldEnum[]
   }
 
@@ -6934,6 +7027,9 @@ export namespace Prisma {
     phone: string | null
     firstName: string | null
     lastName: string | null
+    emailOtp: string | null
+    phoneOtp: string | null
+    otpExpiry: Date | null
     role: $Enums.UserRole | null
     isEmailVerified: boolean | null
     isPhoneVerified: boolean | null
@@ -6951,6 +7047,9 @@ export namespace Prisma {
     phone: string | null
     firstName: string | null
     lastName: string | null
+    emailOtp: string | null
+    phoneOtp: string | null
+    otpExpiry: Date | null
     role: $Enums.UserRole | null
     isEmailVerified: boolean | null
     isPhoneVerified: boolean | null
@@ -6968,6 +7067,9 @@ export namespace Prisma {
     phone: number
     firstName: number
     lastName: number
+    emailOtp: number
+    phoneOtp: number
+    otpExpiry: number
     role: number
     isEmailVerified: number
     isPhoneVerified: number
@@ -6987,6 +7089,9 @@ export namespace Prisma {
     phone?: true
     firstName?: true
     lastName?: true
+    emailOtp?: true
+    phoneOtp?: true
+    otpExpiry?: true
     role?: true
     isEmailVerified?: true
     isPhoneVerified?: true
@@ -7004,6 +7109,9 @@ export namespace Prisma {
     phone?: true
     firstName?: true
     lastName?: true
+    emailOtp?: true
+    phoneOtp?: true
+    otpExpiry?: true
     role?: true
     isEmailVerified?: true
     isPhoneVerified?: true
@@ -7021,6 +7129,9 @@ export namespace Prisma {
     phone?: true
     firstName?: true
     lastName?: true
+    emailOtp?: true
+    phoneOtp?: true
+    otpExpiry?: true
     role?: true
     isEmailVerified?: true
     isPhoneVerified?: true
@@ -7111,6 +7222,9 @@ export namespace Prisma {
     phone: string | null
     firstName: string | null
     lastName: string | null
+    emailOtp: string | null
+    phoneOtp: string | null
+    otpExpiry: Date | null
     role: $Enums.UserRole
     isEmailVerified: boolean
     isPhoneVerified: boolean
@@ -7145,6 +7259,9 @@ export namespace Prisma {
     phone?: boolean
     firstName?: boolean
     lastName?: boolean
+    emailOtp?: boolean
+    phoneOtp?: boolean
+    otpExpiry?: boolean
     role?: boolean
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -7167,6 +7284,9 @@ export namespace Prisma {
     phone?: boolean
     firstName?: boolean
     lastName?: boolean
+    emailOtp?: boolean
+    phoneOtp?: boolean
+    otpExpiry?: boolean
     role?: boolean
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -7184,6 +7304,9 @@ export namespace Prisma {
     phone?: boolean
     firstName?: boolean
     lastName?: boolean
+    emailOtp?: boolean
+    phoneOtp?: boolean
+    otpExpiry?: boolean
     role?: boolean
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -7201,6 +7324,9 @@ export namespace Prisma {
     phone?: boolean
     firstName?: boolean
     lastName?: boolean
+    emailOtp?: boolean
+    phoneOtp?: boolean
+    otpExpiry?: boolean
     role?: boolean
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -7210,7 +7336,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "passwordHash" | "refreshToken" | "phone" | "firstName" | "lastName" | "role" | "isEmailVerified" | "isPhoneVerified" | "status" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "passwordHash" | "refreshToken" | "phone" | "firstName" | "lastName" | "emailOtp" | "phoneOtp" | "otpExpiry" | "role" | "isEmailVerified" | "isPhoneVerified" | "status" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     buyer?: boolean | User$buyerArgs<ExtArgs>
     seller?: boolean | User$sellerArgs<ExtArgs>
@@ -7237,6 +7363,9 @@ export namespace Prisma {
       phone: string | null
       firstName: string | null
       lastName: string | null
+      emailOtp: string | null
+      phoneOtp: string | null
+      otpExpiry: Date | null
       role: $Enums.UserRole
       isEmailVerified: boolean
       isPhoneVerified: boolean
@@ -7678,6 +7807,9 @@ export namespace Prisma {
     readonly phone: FieldRef<"User", 'String'>
     readonly firstName: FieldRef<"User", 'String'>
     readonly lastName: FieldRef<"User", 'String'>
+    readonly emailOtp: FieldRef<"User", 'String'>
+    readonly phoneOtp: FieldRef<"User", 'String'>
+    readonly otpExpiry: FieldRef<"User", 'DateTime'>
     readonly role: FieldRef<"User", 'UserRole'>
     readonly isEmailVerified: FieldRef<"User", 'Boolean'>
     readonly isPhoneVerified: FieldRef<"User", 'Boolean'>
@@ -7881,6 +8013,11 @@ export namespace Prisma {
      * Skip the first `n` Users.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Users.
+     */
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
@@ -8250,6 +8387,10 @@ export namespace Prisma {
     bankAccountNumber: 'bankAccountNumber',
     bankIfsc: 'bankIfsc',
     kycStatus: 'kycStatus',
+    signatureType: 'signatureType',
+    signatureUrl: 'signatureUrl',
+    signatureText: 'signatureText',
+    signedAt: 'signedAt',
     rating: 'rating',
     totalSales: 'totalSales',
     createdAt: 'createdAt',
@@ -8267,6 +8408,9 @@ export namespace Prisma {
     phone: 'phone',
     firstName: 'firstName',
     lastName: 'lastName',
+    emailOtp: 'emailOtp',
+    phoneOtp: 'phoneOtp',
+    otpExpiry: 'otpExpiry',
     role: 'role',
     isEmailVerified: 'isEmailVerified',
     isPhoneVerified: 'isPhoneVerified',
@@ -8396,6 +8540,20 @@ export namespace Prisma {
    * Reference to a field of type 'kycStatus[]'
    */
   export type ListEnumkycStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'kycStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SignatureType'
+   */
+  export type EnumSignatureTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SignatureType'>
+    
+
+
+  /**
+   * Reference to a field of type 'SignatureType[]'
+   */
+  export type ListEnumSignatureTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SignatureType[]'>
     
 
 
@@ -8540,9 +8698,9 @@ export namespace Prisma {
     NOT?: BuyerWhereInput | BuyerWhereInput[]
     id?: UuidFilter<"Buyer"> | string
     userId?: UuidFilter<"Buyer"> | string
-    defaultShippingAddressId?: StringFilter<"Buyer"> | string
-    walletBalance?: DecimalFilter<"Buyer"> | Decimal | DecimalJsLike | number | string
-    preferredPaymentMethod?: StringFilter<"Buyer"> | string
+    defaultShippingAddressId?: StringNullableFilter<"Buyer"> | string | null
+    walletBalance?: DecimalNullableFilter<"Buyer"> | Decimal | DecimalJsLike | number | string | null
+    preferredPaymentMethod?: StringNullableFilter<"Buyer"> | string | null
     createdAt?: DateTimeFilter<"Buyer"> | Date | string
     updatedAt?: DateTimeFilter<"Buyer"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -8551,9 +8709,9 @@ export namespace Prisma {
   export type BuyerOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
-    defaultShippingAddressId?: SortOrder
-    walletBalance?: SortOrder
-    preferredPaymentMethod?: SortOrder
+    defaultShippingAddressId?: SortOrderInput | SortOrder
+    walletBalance?: SortOrderInput | SortOrder
+    preferredPaymentMethod?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -8565,9 +8723,9 @@ export namespace Prisma {
     AND?: BuyerWhereInput | BuyerWhereInput[]
     OR?: BuyerWhereInput[]
     NOT?: BuyerWhereInput | BuyerWhereInput[]
-    defaultShippingAddressId?: StringFilter<"Buyer"> | string
-    walletBalance?: DecimalFilter<"Buyer"> | Decimal | DecimalJsLike | number | string
-    preferredPaymentMethod?: StringFilter<"Buyer"> | string
+    defaultShippingAddressId?: StringNullableFilter<"Buyer"> | string | null
+    walletBalance?: DecimalNullableFilter<"Buyer"> | Decimal | DecimalJsLike | number | string | null
+    preferredPaymentMethod?: StringNullableFilter<"Buyer"> | string | null
     createdAt?: DateTimeFilter<"Buyer"> | Date | string
     updatedAt?: DateTimeFilter<"Buyer"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -8576,9 +8734,9 @@ export namespace Prisma {
   export type BuyerOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
-    defaultShippingAddressId?: SortOrder
-    walletBalance?: SortOrder
-    preferredPaymentMethod?: SortOrder
+    defaultShippingAddressId?: SortOrderInput | SortOrder
+    walletBalance?: SortOrderInput | SortOrder
+    preferredPaymentMethod?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: BuyerCountOrderByAggregateInput
@@ -8594,9 +8752,9 @@ export namespace Prisma {
     NOT?: BuyerScalarWhereWithAggregatesInput | BuyerScalarWhereWithAggregatesInput[]
     id?: UuidWithAggregatesFilter<"Buyer"> | string
     userId?: UuidWithAggregatesFilter<"Buyer"> | string
-    defaultShippingAddressId?: StringWithAggregatesFilter<"Buyer"> | string
-    walletBalance?: DecimalWithAggregatesFilter<"Buyer"> | Decimal | DecimalJsLike | number | string
-    preferredPaymentMethod?: StringWithAggregatesFilter<"Buyer"> | string
+    defaultShippingAddressId?: StringNullableWithAggregatesFilter<"Buyer"> | string | null
+    walletBalance?: DecimalNullableWithAggregatesFilter<"Buyer"> | Decimal | DecimalJsLike | number | string | null
+    preferredPaymentMethod?: StringNullableWithAggregatesFilter<"Buyer"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Buyer"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Buyer"> | Date | string
   }
@@ -8696,15 +8854,19 @@ export namespace Prisma {
     NOT?: SellerWhereInput | SellerWhereInput[]
     id?: UuidFilter<"Seller"> | string
     userId?: UuidFilter<"Seller"> | string
-    storeName?: StringFilter<"Seller"> | string
+    storeName?: StringNullableFilter<"Seller"> | string | null
     storeDescription?: StringNullableFilter<"Seller"> | string | null
-    gstNumber?: StringFilter<"Seller"> | string
-    panNumber?: StringFilter<"Seller"> | string
-    bankAccountNumber?: StringFilter<"Seller"> | string
-    bankIfsc?: StringFilter<"Seller"> | string
-    kycStatus?: EnumkycStatusFilter<"Seller"> | $Enums.kycStatus
-    rating?: DecimalFilter<"Seller"> | Decimal | DecimalJsLike | number | string
-    totalSales?: IntFilter<"Seller"> | number
+    gstNumber?: StringNullableFilter<"Seller"> | string | null
+    panNumber?: StringNullableFilter<"Seller"> | string | null
+    bankAccountNumber?: StringNullableFilter<"Seller"> | string | null
+    bankIfsc?: StringNullableFilter<"Seller"> | string | null
+    kycStatus?: EnumkycStatusNullableFilter<"Seller"> | $Enums.kycStatus | null
+    signatureType?: EnumSignatureTypeNullableFilter<"Seller"> | $Enums.SignatureType | null
+    signatureUrl?: StringNullableFilter<"Seller"> | string | null
+    signatureText?: StringNullableFilter<"Seller"> | string | null
+    signedAt?: DateTimeNullableFilter<"Seller"> | Date | string | null
+    rating?: DecimalNullableFilter<"Seller"> | Decimal | DecimalJsLike | number | string | null
+    totalSales?: IntNullableFilter<"Seller"> | number | null
     createdAt?: DateTimeFilter<"Seller"> | Date | string
     updatedAt?: DateTimeFilter<"Seller"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -8713,15 +8875,19 @@ export namespace Prisma {
   export type SellerOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
-    storeName?: SortOrder
+    storeName?: SortOrderInput | SortOrder
     storeDescription?: SortOrderInput | SortOrder
-    gstNumber?: SortOrder
-    panNumber?: SortOrder
-    bankAccountNumber?: SortOrder
-    bankIfsc?: SortOrder
-    kycStatus?: SortOrder
-    rating?: SortOrder
-    totalSales?: SortOrder
+    gstNumber?: SortOrderInput | SortOrder
+    panNumber?: SortOrderInput | SortOrder
+    bankAccountNumber?: SortOrderInput | SortOrder
+    bankIfsc?: SortOrderInput | SortOrder
+    kycStatus?: SortOrderInput | SortOrder
+    signatureType?: SortOrderInput | SortOrder
+    signatureUrl?: SortOrderInput | SortOrder
+    signatureText?: SortOrderInput | SortOrder
+    signedAt?: SortOrderInput | SortOrder
+    rating?: SortOrderInput | SortOrder
+    totalSales?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
@@ -8733,15 +8899,19 @@ export namespace Prisma {
     AND?: SellerWhereInput | SellerWhereInput[]
     OR?: SellerWhereInput[]
     NOT?: SellerWhereInput | SellerWhereInput[]
-    storeName?: StringFilter<"Seller"> | string
+    storeName?: StringNullableFilter<"Seller"> | string | null
     storeDescription?: StringNullableFilter<"Seller"> | string | null
-    gstNumber?: StringFilter<"Seller"> | string
-    panNumber?: StringFilter<"Seller"> | string
-    bankAccountNumber?: StringFilter<"Seller"> | string
-    bankIfsc?: StringFilter<"Seller"> | string
-    kycStatus?: EnumkycStatusFilter<"Seller"> | $Enums.kycStatus
-    rating?: DecimalFilter<"Seller"> | Decimal | DecimalJsLike | number | string
-    totalSales?: IntFilter<"Seller"> | number
+    gstNumber?: StringNullableFilter<"Seller"> | string | null
+    panNumber?: StringNullableFilter<"Seller"> | string | null
+    bankAccountNumber?: StringNullableFilter<"Seller"> | string | null
+    bankIfsc?: StringNullableFilter<"Seller"> | string | null
+    kycStatus?: EnumkycStatusNullableFilter<"Seller"> | $Enums.kycStatus | null
+    signatureType?: EnumSignatureTypeNullableFilter<"Seller"> | $Enums.SignatureType | null
+    signatureUrl?: StringNullableFilter<"Seller"> | string | null
+    signatureText?: StringNullableFilter<"Seller"> | string | null
+    signedAt?: DateTimeNullableFilter<"Seller"> | Date | string | null
+    rating?: DecimalNullableFilter<"Seller"> | Decimal | DecimalJsLike | number | string | null
+    totalSales?: IntNullableFilter<"Seller"> | number | null
     createdAt?: DateTimeFilter<"Seller"> | Date | string
     updatedAt?: DateTimeFilter<"Seller"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -8750,15 +8920,19 @@ export namespace Prisma {
   export type SellerOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
-    storeName?: SortOrder
+    storeName?: SortOrderInput | SortOrder
     storeDescription?: SortOrderInput | SortOrder
-    gstNumber?: SortOrder
-    panNumber?: SortOrder
-    bankAccountNumber?: SortOrder
-    bankIfsc?: SortOrder
-    kycStatus?: SortOrder
-    rating?: SortOrder
-    totalSales?: SortOrder
+    gstNumber?: SortOrderInput | SortOrder
+    panNumber?: SortOrderInput | SortOrder
+    bankAccountNumber?: SortOrderInput | SortOrder
+    bankIfsc?: SortOrderInput | SortOrder
+    kycStatus?: SortOrderInput | SortOrder
+    signatureType?: SortOrderInput | SortOrder
+    signatureUrl?: SortOrderInput | SortOrder
+    signatureText?: SortOrderInput | SortOrder
+    signedAt?: SortOrderInput | SortOrder
+    rating?: SortOrderInput | SortOrder
+    totalSales?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: SellerCountOrderByAggregateInput
@@ -8774,15 +8948,19 @@ export namespace Prisma {
     NOT?: SellerScalarWhereWithAggregatesInput | SellerScalarWhereWithAggregatesInput[]
     id?: UuidWithAggregatesFilter<"Seller"> | string
     userId?: UuidWithAggregatesFilter<"Seller"> | string
-    storeName?: StringWithAggregatesFilter<"Seller"> | string
+    storeName?: StringNullableWithAggregatesFilter<"Seller"> | string | null
     storeDescription?: StringNullableWithAggregatesFilter<"Seller"> | string | null
-    gstNumber?: StringWithAggregatesFilter<"Seller"> | string
-    panNumber?: StringWithAggregatesFilter<"Seller"> | string
-    bankAccountNumber?: StringWithAggregatesFilter<"Seller"> | string
-    bankIfsc?: StringWithAggregatesFilter<"Seller"> | string
-    kycStatus?: EnumkycStatusWithAggregatesFilter<"Seller"> | $Enums.kycStatus
-    rating?: DecimalWithAggregatesFilter<"Seller"> | Decimal | DecimalJsLike | number | string
-    totalSales?: IntWithAggregatesFilter<"Seller"> | number
+    gstNumber?: StringNullableWithAggregatesFilter<"Seller"> | string | null
+    panNumber?: StringNullableWithAggregatesFilter<"Seller"> | string | null
+    bankAccountNumber?: StringNullableWithAggregatesFilter<"Seller"> | string | null
+    bankIfsc?: StringNullableWithAggregatesFilter<"Seller"> | string | null
+    kycStatus?: EnumkycStatusNullableWithAggregatesFilter<"Seller"> | $Enums.kycStatus | null
+    signatureType?: EnumSignatureTypeNullableWithAggregatesFilter<"Seller"> | $Enums.SignatureType | null
+    signatureUrl?: StringNullableWithAggregatesFilter<"Seller"> | string | null
+    signatureText?: StringNullableWithAggregatesFilter<"Seller"> | string | null
+    signedAt?: DateTimeNullableWithAggregatesFilter<"Seller"> | Date | string | null
+    rating?: DecimalNullableWithAggregatesFilter<"Seller"> | Decimal | DecimalJsLike | number | string | null
+    totalSales?: IntNullableWithAggregatesFilter<"Seller"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Seller"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Seller"> | Date | string
   }
@@ -8798,6 +8976,9 @@ export namespace Prisma {
     phone?: StringNullableFilter<"User"> | string | null
     firstName?: StringNullableFilter<"User"> | string | null
     lastName?: StringNullableFilter<"User"> | string | null
+    emailOtp?: StringNullableFilter<"User"> | string | null
+    phoneOtp?: StringNullableFilter<"User"> | string | null
+    otpExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     isEmailVerified?: BoolFilter<"User"> | boolean
     isPhoneVerified?: BoolFilter<"User"> | boolean
@@ -8819,6 +9000,9 @@ export namespace Prisma {
     phone?: SortOrderInput | SortOrder
     firstName?: SortOrderInput | SortOrder
     lastName?: SortOrderInput | SortOrder
+    emailOtp?: SortOrderInput | SortOrder
+    phoneOtp?: SortOrderInput | SortOrder
+    otpExpiry?: SortOrderInput | SortOrder
     role?: SortOrder
     isEmailVerified?: SortOrder
     isPhoneVerified?: SortOrder
@@ -8835,14 +9019,17 @@ export namespace Prisma {
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     email?: string
+    phone?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     passwordHash?: StringFilter<"User"> | string
     refreshToken?: StringNullableFilter<"User"> | string | null
-    phone?: StringNullableFilter<"User"> | string | null
     firstName?: StringNullableFilter<"User"> | string | null
     lastName?: StringNullableFilter<"User"> | string | null
+    emailOtp?: StringNullableFilter<"User"> | string | null
+    phoneOtp?: StringNullableFilter<"User"> | string | null
+    otpExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     isEmailVerified?: BoolFilter<"User"> | boolean
     isPhoneVerified?: BoolFilter<"User"> | boolean
@@ -8854,7 +9041,7 @@ export namespace Prisma {
     seller?: XOR<SellerNullableScalarRelationFilter, SellerWhereInput> | null
     orders?: OrderListRelationFilter
     addresses?: AddressListRelationFilter
-  }, "id" | "email">
+  }, "id" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -8864,6 +9051,9 @@ export namespace Prisma {
     phone?: SortOrderInput | SortOrder
     firstName?: SortOrderInput | SortOrder
     lastName?: SortOrderInput | SortOrder
+    emailOtp?: SortOrderInput | SortOrder
+    phoneOtp?: SortOrderInput | SortOrder
+    otpExpiry?: SortOrderInput | SortOrder
     role?: SortOrder
     isEmailVerified?: SortOrder
     isPhoneVerified?: SortOrder
@@ -8887,6 +9077,9 @@ export namespace Prisma {
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
     firstName?: StringNullableWithAggregatesFilter<"User"> | string | null
     lastName?: StringNullableWithAggregatesFilter<"User"> | string | null
+    emailOtp?: StringNullableWithAggregatesFilter<"User"> | string | null
+    phoneOtp?: StringNullableWithAggregatesFilter<"User"> | string | null
+    otpExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
     isEmailVerified?: BoolWithAggregatesFilter<"User"> | boolean
     isPhoneVerified?: BoolWithAggregatesFilter<"User"> | boolean
@@ -9002,9 +9195,9 @@ export namespace Prisma {
 
   export type BuyerCreateInput = {
     id?: string
-    defaultShippingAddressId: string
-    walletBalance?: Decimal | DecimalJsLike | number | string
-    preferredPaymentMethod: string
+    defaultShippingAddressId?: string | null
+    walletBalance?: Decimal | DecimalJsLike | number | string | null
+    preferredPaymentMethod?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutBuyerInput
@@ -9013,18 +9206,18 @@ export namespace Prisma {
   export type BuyerUncheckedCreateInput = {
     id?: string
     userId: string
-    defaultShippingAddressId: string
-    walletBalance?: Decimal | DecimalJsLike | number | string
-    preferredPaymentMethod: string
+    defaultShippingAddressId?: string | null
+    walletBalance?: Decimal | DecimalJsLike | number | string | null
+    preferredPaymentMethod?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type BuyerUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    defaultShippingAddressId?: StringFieldUpdateOperationsInput | string
-    walletBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    preferredPaymentMethod?: StringFieldUpdateOperationsInput | string
+    defaultShippingAddressId?: NullableStringFieldUpdateOperationsInput | string | null
+    walletBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    preferredPaymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutBuyerNestedInput
@@ -9033,9 +9226,9 @@ export namespace Prisma {
   export type BuyerUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    defaultShippingAddressId?: StringFieldUpdateOperationsInput | string
-    walletBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    preferredPaymentMethod?: StringFieldUpdateOperationsInput | string
+    defaultShippingAddressId?: NullableStringFieldUpdateOperationsInput | string | null
+    walletBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    preferredPaymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9043,18 +9236,18 @@ export namespace Prisma {
   export type BuyerCreateManyInput = {
     id?: string
     userId: string
-    defaultShippingAddressId: string
-    walletBalance?: Decimal | DecimalJsLike | number | string
-    preferredPaymentMethod: string
+    defaultShippingAddressId?: string | null
+    walletBalance?: Decimal | DecimalJsLike | number | string | null
+    preferredPaymentMethod?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type BuyerUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    defaultShippingAddressId?: StringFieldUpdateOperationsInput | string
-    walletBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    preferredPaymentMethod?: StringFieldUpdateOperationsInput | string
+    defaultShippingAddressId?: NullableStringFieldUpdateOperationsInput | string | null
+    walletBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    preferredPaymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9062,9 +9255,9 @@ export namespace Prisma {
   export type BuyerUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    defaultShippingAddressId?: StringFieldUpdateOperationsInput | string
-    walletBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    preferredPaymentMethod?: StringFieldUpdateOperationsInput | string
+    defaultShippingAddressId?: NullableStringFieldUpdateOperationsInput | string | null
+    walletBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    preferredPaymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9154,15 +9347,19 @@ export namespace Prisma {
 
   export type SellerCreateInput = {
     id?: string
-    storeName: string
+    storeName?: string | null
     storeDescription?: string | null
-    gstNumber: string
-    panNumber: string
-    bankAccountNumber: string
-    bankIfsc: string
-    kycStatus?: $Enums.kycStatus
-    rating?: Decimal | DecimalJsLike | number | string
-    totalSales?: number
+    gstNumber?: string | null
+    panNumber?: string | null
+    bankAccountNumber?: string | null
+    bankIfsc?: string | null
+    kycStatus?: $Enums.kycStatus | null
+    signatureType?: $Enums.SignatureType | null
+    signatureUrl?: string | null
+    signatureText?: string | null
+    signedAt?: Date | string | null
+    rating?: Decimal | DecimalJsLike | number | string | null
+    totalSales?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSellerInput
@@ -9171,30 +9368,38 @@ export namespace Prisma {
   export type SellerUncheckedCreateInput = {
     id?: string
     userId: string
-    storeName: string
+    storeName?: string | null
     storeDescription?: string | null
-    gstNumber: string
-    panNumber: string
-    bankAccountNumber: string
-    bankIfsc: string
-    kycStatus?: $Enums.kycStatus
-    rating?: Decimal | DecimalJsLike | number | string
-    totalSales?: number
+    gstNumber?: string | null
+    panNumber?: string | null
+    bankAccountNumber?: string | null
+    bankIfsc?: string | null
+    kycStatus?: $Enums.kycStatus | null
+    signatureType?: $Enums.SignatureType | null
+    signatureUrl?: string | null
+    signatureText?: string | null
+    signedAt?: Date | string | null
+    rating?: Decimal | DecimalJsLike | number | string | null
+    totalSales?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type SellerUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    storeName?: StringFieldUpdateOperationsInput | string
+    storeName?: NullableStringFieldUpdateOperationsInput | string | null
     storeDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    gstNumber?: StringFieldUpdateOperationsInput | string
-    panNumber?: StringFieldUpdateOperationsInput | string
-    bankAccountNumber?: StringFieldUpdateOperationsInput | string
-    bankIfsc?: StringFieldUpdateOperationsInput | string
-    kycStatus?: EnumkycStatusFieldUpdateOperationsInput | $Enums.kycStatus
-    rating?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    totalSales?: IntFieldUpdateOperationsInput | number
+    gstNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    panNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIfsc?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: NullableEnumkycStatusFieldUpdateOperationsInput | $Enums.kycStatus | null
+    signatureType?: NullableEnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType | null
+    signatureUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signatureText?: NullableStringFieldUpdateOperationsInput | string | null
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rating?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalSales?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSellerNestedInput
@@ -9203,15 +9408,19 @@ export namespace Prisma {
   export type SellerUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    storeName?: StringFieldUpdateOperationsInput | string
+    storeName?: NullableStringFieldUpdateOperationsInput | string | null
     storeDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    gstNumber?: StringFieldUpdateOperationsInput | string
-    panNumber?: StringFieldUpdateOperationsInput | string
-    bankAccountNumber?: StringFieldUpdateOperationsInput | string
-    bankIfsc?: StringFieldUpdateOperationsInput | string
-    kycStatus?: EnumkycStatusFieldUpdateOperationsInput | $Enums.kycStatus
-    rating?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    totalSales?: IntFieldUpdateOperationsInput | number
+    gstNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    panNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIfsc?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: NullableEnumkycStatusFieldUpdateOperationsInput | $Enums.kycStatus | null
+    signatureType?: NullableEnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType | null
+    signatureUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signatureText?: NullableStringFieldUpdateOperationsInput | string | null
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rating?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalSales?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9219,30 +9428,38 @@ export namespace Prisma {
   export type SellerCreateManyInput = {
     id?: string
     userId: string
-    storeName: string
+    storeName?: string | null
     storeDescription?: string | null
-    gstNumber: string
-    panNumber: string
-    bankAccountNumber: string
-    bankIfsc: string
-    kycStatus?: $Enums.kycStatus
-    rating?: Decimal | DecimalJsLike | number | string
-    totalSales?: number
+    gstNumber?: string | null
+    panNumber?: string | null
+    bankAccountNumber?: string | null
+    bankIfsc?: string | null
+    kycStatus?: $Enums.kycStatus | null
+    signatureType?: $Enums.SignatureType | null
+    signatureUrl?: string | null
+    signatureText?: string | null
+    signedAt?: Date | string | null
+    rating?: Decimal | DecimalJsLike | number | string | null
+    totalSales?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type SellerUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    storeName?: StringFieldUpdateOperationsInput | string
+    storeName?: NullableStringFieldUpdateOperationsInput | string | null
     storeDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    gstNumber?: StringFieldUpdateOperationsInput | string
-    panNumber?: StringFieldUpdateOperationsInput | string
-    bankAccountNumber?: StringFieldUpdateOperationsInput | string
-    bankIfsc?: StringFieldUpdateOperationsInput | string
-    kycStatus?: EnumkycStatusFieldUpdateOperationsInput | $Enums.kycStatus
-    rating?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    totalSales?: IntFieldUpdateOperationsInput | number
+    gstNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    panNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIfsc?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: NullableEnumkycStatusFieldUpdateOperationsInput | $Enums.kycStatus | null
+    signatureType?: NullableEnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType | null
+    signatureUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signatureText?: NullableStringFieldUpdateOperationsInput | string | null
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rating?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalSales?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9250,15 +9467,19 @@ export namespace Prisma {
   export type SellerUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    storeName?: StringFieldUpdateOperationsInput | string
+    storeName?: NullableStringFieldUpdateOperationsInput | string | null
     storeDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    gstNumber?: StringFieldUpdateOperationsInput | string
-    panNumber?: StringFieldUpdateOperationsInput | string
-    bankAccountNumber?: StringFieldUpdateOperationsInput | string
-    bankIfsc?: StringFieldUpdateOperationsInput | string
-    kycStatus?: EnumkycStatusFieldUpdateOperationsInput | $Enums.kycStatus
-    rating?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    totalSales?: IntFieldUpdateOperationsInput | number
+    gstNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    panNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIfsc?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: NullableEnumkycStatusFieldUpdateOperationsInput | $Enums.kycStatus | null
+    signatureType?: NullableEnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType | null
+    signatureUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signatureText?: NullableStringFieldUpdateOperationsInput | string | null
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rating?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalSales?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9271,6 +9492,9 @@ export namespace Prisma {
     phone?: string | null
     firstName?: string | null
     lastName?: string | null
+    emailOtp?: string | null
+    phoneOtp?: string | null
+    otpExpiry?: Date | string | null
     role?: $Enums.UserRole
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -9292,6 +9516,9 @@ export namespace Prisma {
     phone?: string | null
     firstName?: string | null
     lastName?: string | null
+    emailOtp?: string | null
+    phoneOtp?: string | null
+    otpExpiry?: Date | string | null
     role?: $Enums.UserRole
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -9313,6 +9540,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -9334,6 +9564,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -9355,6 +9588,9 @@ export namespace Prisma {
     phone?: string | null
     firstName?: string | null
     lastName?: string | null
+    emailOtp?: string | null
+    phoneOtp?: string | null
+    otpExpiry?: Date | string | null
     role?: $Enums.UserRole
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -9372,6 +9608,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -9389,6 +9628,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -9601,15 +9843,15 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type DecimalFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+  export type DecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
     lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
   }
 
   export type BuyerCountOrderByAggregateInput = {
@@ -9650,20 +9892,20 @@ export namespace Prisma {
     walletBalance?: SortOrder
   }
 
-  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+  export type DecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
     lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedDecimalFilter<$PrismaModel>
-    _sum?: NestedDecimalFilter<$PrismaModel>
-    _min?: NestedDecimalFilter<$PrismaModel>
-    _max?: NestedDecimalFilter<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -9737,22 +9979,40 @@ export namespace Prisma {
     name?: SortOrder
   }
 
-  export type EnumkycStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.kycStatus | EnumkycStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumkycStatusFilter<$PrismaModel> | $Enums.kycStatus
+  export type EnumkycStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.kycStatus | EnumkycStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumkycStatusNullableFilter<$PrismaModel> | $Enums.kycStatus | null
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+  export type EnumSignatureTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.SignatureType | EnumSignatureTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SignatureType[] | ListEnumSignatureTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SignatureType[] | ListEnumSignatureTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSignatureTypeNullableFilter<$PrismaModel> | $Enums.SignatureType | null
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type SellerCountOrderByAggregateInput = {
@@ -9765,6 +10025,10 @@ export namespace Prisma {
     bankAccountNumber?: SortOrder
     bankIfsc?: SortOrder
     kycStatus?: SortOrder
+    signatureType?: SortOrder
+    signatureUrl?: SortOrder
+    signatureText?: SortOrder
+    signedAt?: SortOrder
     rating?: SortOrder
     totalSales?: SortOrder
     createdAt?: SortOrder
@@ -9786,6 +10050,10 @@ export namespace Prisma {
     bankAccountNumber?: SortOrder
     bankIfsc?: SortOrder
     kycStatus?: SortOrder
+    signatureType?: SortOrder
+    signatureUrl?: SortOrder
+    signatureText?: SortOrder
+    signedAt?: SortOrder
     rating?: SortOrder
     totalSales?: SortOrder
     createdAt?: SortOrder
@@ -9802,6 +10070,10 @@ export namespace Prisma {
     bankAccountNumber?: SortOrder
     bankIfsc?: SortOrder
     kycStatus?: SortOrder
+    signatureType?: SortOrder
+    signatureUrl?: SortOrder
+    signatureText?: SortOrder
+    signedAt?: SortOrder
     rating?: SortOrder
     totalSales?: SortOrder
     createdAt?: SortOrder
@@ -9813,30 +10085,54 @@ export namespace Prisma {
     totalSales?: SortOrder
   }
 
-  export type EnumkycStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.kycStatus | EnumkycStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumkycStatusWithAggregatesFilter<$PrismaModel> | $Enums.kycStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumkycStatusFilter<$PrismaModel>
-    _max?: NestedEnumkycStatusFilter<$PrismaModel>
+  export type EnumkycStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.kycStatus | EnumkycStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumkycStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.kycStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumkycStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumkycStatusNullableFilter<$PrismaModel>
   }
 
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+  export type EnumSignatureTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SignatureType | EnumSignatureTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SignatureType[] | ListEnumSignatureTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SignatureType[] | ListEnumSignatureTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSignatureTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.SignatureType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumSignatureTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumSignatureTypeNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type EnumUserRoleFilter<$PrismaModel = never> = {
@@ -9851,17 +10147,6 @@ export namespace Prisma {
     in?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumUserStatusFilter<$PrismaModel> | $Enums.UserStatus
-  }
-
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type BuyerNullableScalarRelationFilter = {
@@ -9902,6 +10187,9 @@ export namespace Prisma {
     phone?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
+    emailOtp?: SortOrder
+    phoneOtp?: SortOrder
+    otpExpiry?: SortOrder
     role?: SortOrder
     isEmailVerified?: SortOrder
     isPhoneVerified?: SortOrder
@@ -9919,6 +10207,9 @@ export namespace Prisma {
     phone?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
+    emailOtp?: SortOrder
+    phoneOtp?: SortOrder
+    otpExpiry?: SortOrder
     role?: SortOrder
     isEmailVerified?: SortOrder
     isPhoneVerified?: SortOrder
@@ -9936,6 +10227,9 @@ export namespace Prisma {
     phone?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
+    emailOtp?: SortOrder
+    phoneOtp?: SortOrder
+    otpExpiry?: SortOrder
     role?: SortOrder
     isEmailVerified?: SortOrder
     isPhoneVerified?: SortOrder
@@ -9963,20 +10257,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumUserStatusFilter<$PrismaModel>
     _max?: NestedEnumUserStatusFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type UserCreateNestedOneWithoutAddressesInput = {
@@ -10019,8 +10299,8 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type DecimalFieldUpdateOperationsInput = {
-    set?: Decimal | DecimalJsLike | number | string
+  export type NullableDecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string | null
     increment?: Decimal | DecimalJsLike | number | string
     decrement?: Decimal | DecimalJsLike | number | string
     multiply?: Decimal | DecimalJsLike | number | string
@@ -10063,12 +10343,20 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type EnumkycStatusFieldUpdateOperationsInput = {
-    set?: $Enums.kycStatus
+  export type NullableEnumkycStatusFieldUpdateOperationsInput = {
+    set?: $Enums.kycStatus | null
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
+  export type NullableEnumSignatureTypeFieldUpdateOperationsInput = {
+    set?: $Enums.SignatureType | null
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
@@ -10141,10 +10429,6 @@ export namespace Prisma {
 
   export type EnumUserStatusFieldUpdateOperationsInput = {
     set?: $Enums.UserStatus
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type BuyerUpdateOneWithoutUserNestedInput = {
@@ -10407,31 +10691,31 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedDecimalFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
     lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
   }
 
-  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
     lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedDecimalFilter<$PrismaModel>
-    _sum?: NestedDecimalFilter<$PrismaModel>
-    _min?: NestedDecimalFilter<$PrismaModel>
-    _max?: NestedDecimalFilter<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type NestedFloatFilter<$PrismaModel = never> = {
@@ -10461,37 +10745,90 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
-  export type NestedEnumkycStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.kycStatus | EnumkycStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumkycStatusFilter<$PrismaModel> | $Enums.kycStatus
+  export type NestedEnumkycStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.kycStatus | EnumkycStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumkycStatusNullableFilter<$PrismaModel> | $Enums.kycStatus | null
   }
 
-  export type NestedEnumkycStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.kycStatus | EnumkycStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumkycStatusWithAggregatesFilter<$PrismaModel> | $Enums.kycStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumkycStatusFilter<$PrismaModel>
-    _max?: NestedEnumkycStatusFilter<$PrismaModel>
+  export type NestedEnumSignatureTypeNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.SignatureType | EnumSignatureTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SignatureType[] | ListEnumSignatureTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SignatureType[] | ListEnumSignatureTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSignatureTypeNullableFilter<$PrismaModel> | $Enums.SignatureType | null
   }
 
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumkycStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.kycStatus | EnumkycStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.kycStatus[] | ListEnumkycStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumkycStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.kycStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumkycStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumkycStatusNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSignatureTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SignatureType | EnumSignatureTypeFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SignatureType[] | ListEnumSignatureTypeFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SignatureType[] | ListEnumSignatureTypeFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSignatureTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.SignatureType | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumSignatureTypeNullableFilter<$PrismaModel>
+    _max?: NestedEnumSignatureTypeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedEnumUserRoleFilter<$PrismaModel = never> = {
@@ -10506,17 +10843,6 @@ export namespace Prisma {
     in?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.UserStatus[] | ListEnumUserStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumUserStatusFilter<$PrismaModel> | $Enums.UserStatus
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedEnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -10539,20 +10865,6 @@ export namespace Prisma {
     _max?: NestedEnumUserStatusFilter<$PrismaModel>
   }
 
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
   export type UserCreateWithoutAddressesInput = {
     id?: string
     email: string
@@ -10561,6 +10873,9 @@ export namespace Prisma {
     phone?: string | null
     firstName?: string | null
     lastName?: string | null
+    emailOtp?: string | null
+    phoneOtp?: string | null
+    otpExpiry?: Date | string | null
     role?: $Enums.UserRole
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -10581,6 +10896,9 @@ export namespace Prisma {
     phone?: string | null
     firstName?: string | null
     lastName?: string | null
+    emailOtp?: string | null
+    phoneOtp?: string | null
+    otpExpiry?: Date | string | null
     role?: $Enums.UserRole
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -10617,6 +10935,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -10637,6 +10958,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -10657,6 +10981,9 @@ export namespace Prisma {
     phone?: string | null
     firstName?: string | null
     lastName?: string | null
+    emailOtp?: string | null
+    phoneOtp?: string | null
+    otpExpiry?: Date | string | null
     role?: $Enums.UserRole
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -10677,6 +11004,9 @@ export namespace Prisma {
     phone?: string | null
     firstName?: string | null
     lastName?: string | null
+    emailOtp?: string | null
+    phoneOtp?: string | null
+    otpExpiry?: Date | string | null
     role?: $Enums.UserRole
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -10713,6 +11043,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -10733,6 +11066,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -10753,6 +11089,9 @@ export namespace Prisma {
     phone?: string | null
     firstName?: string | null
     lastName?: string | null
+    emailOtp?: string | null
+    phoneOtp?: string | null
+    otpExpiry?: Date | string | null
     role?: $Enums.UserRole
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -10773,6 +11112,9 @@ export namespace Prisma {
     phone?: string | null
     firstName?: string | null
     lastName?: string | null
+    emailOtp?: string | null
+    phoneOtp?: string | null
+    otpExpiry?: Date | string | null
     role?: $Enums.UserRole
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -10809,6 +11151,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -10829,6 +11174,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -10849,6 +11197,9 @@ export namespace Prisma {
     phone?: string | null
     firstName?: string | null
     lastName?: string | null
+    emailOtp?: string | null
+    phoneOtp?: string | null
+    otpExpiry?: Date | string | null
     role?: $Enums.UserRole
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -10869,6 +11220,9 @@ export namespace Prisma {
     phone?: string | null
     firstName?: string | null
     lastName?: string | null
+    emailOtp?: string | null
+    phoneOtp?: string | null
+    otpExpiry?: Date | string | null
     role?: $Enums.UserRole
     isEmailVerified?: boolean
     isPhoneVerified?: boolean
@@ -10905,6 +11259,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -10925,6 +11282,9 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneOtp?: NullableStringFieldUpdateOperationsInput | string | null
+    otpExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     isEmailVerified?: BoolFieldUpdateOperationsInput | boolean
     isPhoneVerified?: BoolFieldUpdateOperationsInput | boolean
@@ -10939,18 +11299,18 @@ export namespace Prisma {
 
   export type BuyerCreateWithoutUserInput = {
     id?: string
-    defaultShippingAddressId: string
-    walletBalance?: Decimal | DecimalJsLike | number | string
-    preferredPaymentMethod: string
+    defaultShippingAddressId?: string | null
+    walletBalance?: Decimal | DecimalJsLike | number | string | null
+    preferredPaymentMethod?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type BuyerUncheckedCreateWithoutUserInput = {
     id?: string
-    defaultShippingAddressId: string
-    walletBalance?: Decimal | DecimalJsLike | number | string
-    preferredPaymentMethod: string
+    defaultShippingAddressId?: string | null
+    walletBalance?: Decimal | DecimalJsLike | number | string | null
+    preferredPaymentMethod?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10962,30 +11322,38 @@ export namespace Prisma {
 
   export type SellerCreateWithoutUserInput = {
     id?: string
-    storeName: string
+    storeName?: string | null
     storeDescription?: string | null
-    gstNumber: string
-    panNumber: string
-    bankAccountNumber: string
-    bankIfsc: string
-    kycStatus?: $Enums.kycStatus
-    rating?: Decimal | DecimalJsLike | number | string
-    totalSales?: number
+    gstNumber?: string | null
+    panNumber?: string | null
+    bankAccountNumber?: string | null
+    bankIfsc?: string | null
+    kycStatus?: $Enums.kycStatus | null
+    signatureType?: $Enums.SignatureType | null
+    signatureUrl?: string | null
+    signatureText?: string | null
+    signedAt?: Date | string | null
+    rating?: Decimal | DecimalJsLike | number | string | null
+    totalSales?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
   export type SellerUncheckedCreateWithoutUserInput = {
     id?: string
-    storeName: string
+    storeName?: string | null
     storeDescription?: string | null
-    gstNumber: string
-    panNumber: string
-    bankAccountNumber: string
-    bankIfsc: string
-    kycStatus?: $Enums.kycStatus
-    rating?: Decimal | DecimalJsLike | number | string
-    totalSales?: number
+    gstNumber?: string | null
+    panNumber?: string | null
+    bankAccountNumber?: string | null
+    bankIfsc?: string | null
+    kycStatus?: $Enums.kycStatus | null
+    signatureType?: $Enums.SignatureType | null
+    signatureUrl?: string | null
+    signatureText?: string | null
+    signedAt?: Date | string | null
+    rating?: Decimal | DecimalJsLike | number | string | null
+    totalSales?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -11068,18 +11436,18 @@ export namespace Prisma {
 
   export type BuyerUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    defaultShippingAddressId?: StringFieldUpdateOperationsInput | string
-    walletBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    preferredPaymentMethod?: StringFieldUpdateOperationsInput | string
+    defaultShippingAddressId?: NullableStringFieldUpdateOperationsInput | string | null
+    walletBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    preferredPaymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BuyerUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    defaultShippingAddressId?: StringFieldUpdateOperationsInput | string
-    walletBalance?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    preferredPaymentMethod?: StringFieldUpdateOperationsInput | string
+    defaultShippingAddressId?: NullableStringFieldUpdateOperationsInput | string | null
+    walletBalance?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    preferredPaymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -11097,30 +11465,38 @@ export namespace Prisma {
 
   export type SellerUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    storeName?: StringFieldUpdateOperationsInput | string
+    storeName?: NullableStringFieldUpdateOperationsInput | string | null
     storeDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    gstNumber?: StringFieldUpdateOperationsInput | string
-    panNumber?: StringFieldUpdateOperationsInput | string
-    bankAccountNumber?: StringFieldUpdateOperationsInput | string
-    bankIfsc?: StringFieldUpdateOperationsInput | string
-    kycStatus?: EnumkycStatusFieldUpdateOperationsInput | $Enums.kycStatus
-    rating?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    totalSales?: IntFieldUpdateOperationsInput | number
+    gstNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    panNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIfsc?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: NullableEnumkycStatusFieldUpdateOperationsInput | $Enums.kycStatus | null
+    signatureType?: NullableEnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType | null
+    signatureUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signatureText?: NullableStringFieldUpdateOperationsInput | string | null
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rating?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalSales?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SellerUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    storeName?: StringFieldUpdateOperationsInput | string
+    storeName?: NullableStringFieldUpdateOperationsInput | string | null
     storeDescription?: NullableStringFieldUpdateOperationsInput | string | null
-    gstNumber?: StringFieldUpdateOperationsInput | string
-    panNumber?: StringFieldUpdateOperationsInput | string
-    bankAccountNumber?: StringFieldUpdateOperationsInput | string
-    bankIfsc?: StringFieldUpdateOperationsInput | string
-    kycStatus?: EnumkycStatusFieldUpdateOperationsInput | $Enums.kycStatus
-    rating?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    totalSales?: IntFieldUpdateOperationsInput | number
+    gstNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    panNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIfsc?: NullableStringFieldUpdateOperationsInput | string | null
+    kycStatus?: NullableEnumkycStatusFieldUpdateOperationsInput | $Enums.kycStatus | null
+    signatureType?: NullableEnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType | null
+    signatureUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    signatureText?: NullableStringFieldUpdateOperationsInput | string | null
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rating?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    totalSales?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

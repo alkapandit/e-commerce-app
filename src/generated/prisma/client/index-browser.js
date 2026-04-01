@@ -24,12 +24,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 7.4.0
- * Query Engine version: ab56fe763f921d033a6c195e7ddeb3e255bdbb57
+ * Prisma Client JS version: 7.5.0
+ * Query Engine version: 280c870be64f457428992c43c1f6d557fab6e29e
  */
 Prisma.prismaVersion = {
-  client: "7.4.0",
-  engine: "ab56fe763f921d033a6c195e7ddeb3e255bdbb57"
+  client: "7.5.0",
+  engine: "280c870be64f457428992c43c1f6d557fab6e29e"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -167,6 +167,10 @@ exports.Prisma.SellerScalarFieldEnum = {
   bankAccountNumber: 'bankAccountNumber',
   bankIfsc: 'bankIfsc',
   kycStatus: 'kycStatus',
+  signatureType: 'signatureType',
+  signatureUrl: 'signatureUrl',
+  signatureText: 'signatureText',
+  signedAt: 'signedAt',
   rating: 'rating',
   totalSales: 'totalSales',
   createdAt: 'createdAt',
@@ -181,6 +185,9 @@ exports.Prisma.UserScalarFieldEnum = {
   phone: 'phone',
   firstName: 'firstName',
   lastName: 'lastName',
+  emailOtp: 'emailOtp',
+  phoneOtp: 'phoneOtp',
+  otpExpiry: 'otpExpiry',
   role: 'role',
   isEmailVerified: 'isEmailVerified',
   isPhoneVerified: 'isPhoneVerified',
@@ -214,6 +221,11 @@ exports.kycStatus = exports.$Enums.kycStatus = {
   PENDING: 'PENDING',
   VERIFIED: 'VERIFIED',
   REJECTED: 'REJECTED'
+};
+
+exports.SignatureType = exports.$Enums.SignatureType = {
+  DRAWN: 'DRAWN',
+  TYPED: 'TYPED'
 };
 
 exports.UserRole = exports.$Enums.UserRole = {

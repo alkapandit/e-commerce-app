@@ -1,6 +1,9 @@
-import "dotenv/config";
 import app from "./app";
+import dotenv from "dotenv";
 import prisma from "./common/config/prisma";
+
+dotenv.config({ path: ".env" });
+dotenv.config({ path: ".env.local", override: true });
 
 const PORT = process.env.PORT;
 
