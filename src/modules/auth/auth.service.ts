@@ -151,10 +151,10 @@ export const sendEmailOtp = async (token: string) => {};
 export const verifyEmailOtp = async (email: string, otp: string) => {
   const user = await prisma.user.findUnique({ where: { email } });
 
-  if (!user || user?.email !== email) {
+  if (!user || user?.emailOtp !== otp) {
     throw new ApiError(400, "Invalid OTP!");
   }
-  if (!user?.createdAt || user?.createdAt < new Date()) {
+  if (!user?.otpExpiry || user?.otpExpiry < new Date()) {
     throw new ApiError(400, "OTP Expired!");
   }
 
@@ -162,8 +162,8 @@ export const verifyEmailOtp = async (email: string, otp: string) => {
     where: { email },
     data: {
       isEmailVerified: true,
-      // emailOtp:null,
-      // emailOtpExpiry: null,
+      emailOtp: null,
+      otpExpiry: null,
     },
   });
 
@@ -175,10 +175,10 @@ export const sendPhoneOtp = async (token: string) => {};
 export const verifyPhoneOtp = async (phone: string, otp: string) => {
   const user = await prisma.user.findFirst({ where: { phone } });
 
-  if (!user || user?.phone !== phone) {
+  if (!user || user?.phoneOtp !== otp) {
     throw new ApiError(400, "Invalid OTP!");
   }
-  if (!user?.createdAt || user?.createdAt < new Date()) {
+  if (!user?.otpExpiry || user?.otpExpiry < new Date()) {
     throw new ApiError(400, "OTP Expired!");
   }
 
@@ -186,8 +186,8 @@ export const verifyPhoneOtp = async (phone: string, otp: string) => {
     where: { id: user?.id },
     data: {
       isEmailVerified: true,
-      // phoneOtp:null,
-      // phoneOtpExpiry: null,
+      phoneOtp: null,
+      otpExpiry: null,
     },
   });
 
