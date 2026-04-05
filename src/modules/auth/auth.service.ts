@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 
 import {
   generateAccessToken,
@@ -13,6 +14,7 @@ import {
   RegisterInput,
   RefreshAccessTokenInput,
 } from "./auth.types";
+import { generateOTP } from "../../common/utils/otp.util";
 
 export const register = async (data: RegisterInput) => {
   const { email, firstName, lastName, password, phone, userType } = data;
@@ -70,6 +72,8 @@ export const login = async (data: LoginInput) => {
   if (!identifierTrimmed || !password) {
     throw new ApiError(400, "All fields are required!");
   }
+
+  console.log('identifierTrimmed', identifierTrimmed)
 
   try {
     const user = await prisma.user.findFirst({
@@ -146,7 +150,53 @@ export const refreshToken = async (data: RefreshAccessTokenInput) => {
   }
 };
 
-export const sendEmailOtp = async (token: string) => {};
+export const sendEmailOtp = async (email: string) => {
+  console.log("email", email);
+  // console.log("await prisma.user", await prisma.user);
+  const user = await prisma.user.findFirst({ where: { email } });
+  console.log("sendEmailOtp user", user);
+  if (!user) {
+    throw new ApiError(404, "Email does not exist!");
+  }
+
+  const otp = generateOTP();
+  const expiry = new Date(Date.now() + 10 * 60 * 1000);
+
+  console.log("otp expiry", otp, expiry);
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  console.log("transporter", transporter);
+
+  const otpSent = await transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: `Your Verification Code - ${otp}`,
+    text: `
+    Your One-Time Password (OTP) is: ${otp}
+
+    This OTP is valid for 10 minutes.
+
+    If you did not request this, please ignore this email.
+      `,
+  });
+
+  const result = await prisma.user.update({
+    where: { email },
+    data: {
+      emailOtp: otp,
+      otpExpiry: expiry,
+    },
+  });
+
+  return result;
+};
 
 export const verifyEmailOtp = async (email: string, otp: string) => {
   const user = await prisma.user.findUnique({ where: { email } });
