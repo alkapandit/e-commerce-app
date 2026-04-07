@@ -16,6 +16,16 @@ import {
 } from "./auth.types";
 import { generateOTP } from "../../common/utils/otp.util";
 
+const transporter = nodemailer.createTransport({
+  host: process.env.EMAIL_HOST, // e.g. "smtp.xyz.com"
+  port: Number(process.env.EMAIL_PORT), // usually 587 or 465
+  secure: process.env.EMAIL_SECURE === "true",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
 export const register = async (data: RegisterInput) => {
   const { email, firstName, lastName, password, phone, userType } = data;
 
@@ -73,7 +83,7 @@ export const login = async (data: LoginInput) => {
     throw new ApiError(400, "All fields are required!");
   }
 
-  console.log('identifierTrimmed', identifierTrimmed)
+  console.log("identifierTrimmed", identifierTrimmed);
 
   try {
     const user = await prisma.user.findFirst({
@@ -152,6 +162,13 @@ export const refreshToken = async (data: RefreshAccessTokenInput) => {
 
 export const sendEmailOtp = async (email: string) => {
   console.log("email", email);
+
+  // Simple email format check
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    throw new ApiError(400, "Invalid email format");
+  }
+
   // console.log("await prisma.user", await prisma.user);
   const user = await prisma.user.findFirst({ where: { email } });
   console.log("sendEmailOtp user", user);
@@ -159,43 +176,43 @@ export const sendEmailOtp = async (email: string) => {
     throw new ApiError(404, "Email does not exist!");
   }
 
-  const otp = generateOTP();
-  const expiry = new Date(Date.now() + 10 * 60 * 1000);
+  try {
+    const otp = generateOTP().toString();
+    const expiry = new Date(Date.now() + 10 * 60 * 1000);
 
-  console.log("otp expiry", otp, expiry);
+    console.log("otp expiry", otp, expiry);
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-
-  console.log("transporter", transporter);
-
-  const otpSent = await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: `Your Verification Code - ${otp}`,
-    text: `
+    // console.log("transporter", transporter);
+    console.log("process.env.EMAIL_USER", process.env.EMAIL_USER);
+    const otpSent = await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: `Your Verification Code - ${otp}`,
+      text: `
     Your One-Time Password (OTP) is: ${otp}
 
     This OTP is valid for 10 minutes.
 
     If you did not request this, please ignore this email.
       `,
-  });
+    });
 
-  const result = await prisma.user.update({
-    where: { email },
-    data: {
-      emailOtp: otp,
-      otpExpiry: expiry,
-    },
-  });
+    if (otpSent.rejected.length > 0 || !otpSent.accepted.includes(email)) {
+      throw new ApiError(500, "Email could not be delivered");
+    }
 
-  return result;
+    const result = await prisma.user.update({
+      where: { email },
+      data: {
+        emailOtp: otp,
+        otpExpiry: expiry,
+      },
+    });
+
+    return result;
+  } catch (error) {
+    console.log("error: ", error);
+  }
 };
 
 export const verifyEmailOtp = async (email: string, otp: string) => {
