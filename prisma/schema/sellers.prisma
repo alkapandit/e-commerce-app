@@ -13,9 +13,8 @@ model Seller {
   id String @id @default(uuid()) @db.Uuid
 
   userId String @unique @map("user_id") @db.Uuid
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  storeName        String?  @map("strore_name")
+  storeName        String? @map("strore_name")
   storeDescription String? @map("store_description")
 
   gstNumber String? @map("gst_number")
@@ -36,6 +35,9 @@ model Seller {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products Product[]
 
   @@map("sellers")
 }
