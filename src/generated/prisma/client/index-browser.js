@@ -147,14 +147,44 @@ exports.Prisma.BuyerScalarFieldEnum = {
 
 exports.Prisma.OrderScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  total: 'total',
-  createdAt: 'createdAt'
+  buyerId: 'buyerId',
+  status: 'status',
+  totalAmount: 'totalAmount',
+  addressId: 'addressId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OrderItemScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  productId: 'productId',
+  quantity: 'quantity',
+  price: 'price'
+};
+
+exports.Prisma.PaymentScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  amount: 'amount',
+  status: 'status',
+  method: 'method',
+  transactionId: 'transactionId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.ProductScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  sellerId: 'sellerId',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  stock: 'stock',
+  images: 'images',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SellerScalarFieldEnum = {
@@ -217,6 +247,31 @@ exports.AddressType = exports.$Enums.AddressType = {
   WAREHOUSE: 'WAREHOUSE'
 };
 
+exports.OrderStatus = exports.$Enums.OrderStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  PROCESSING: 'PROCESSING',
+  SHIPPED: 'SHIPPED',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED',
+  REFUNDED: 'REFUNDED'
+};
+
+exports.PaymentStatus = exports.$Enums.PaymentStatus = {
+  PENDING: 'PENDING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+};
+
+exports.PaymentMethod = exports.$Enums.PaymentMethod = {
+  CREDIT_CARD: 'CREDIT_CARD',
+  DEBIT_CARD: 'DEBIT_CARD',
+  UPI: 'UPI',
+  NET_BANKING: 'NET_BANKING',
+  CASH_ON_DELIVERY: 'CASH_ON_DELIVERY'
+};
+
 exports.kycStatus = exports.$Enums.kycStatus = {
   PENDING: 'PENDING',
   VERIFIED: 'VERIFIED',
@@ -245,6 +300,8 @@ exports.Prisma.ModelName = {
   Address: 'Address',
   Buyer: 'Buyer',
   Order: 'Order',
+  OrderItem: 'OrderItem',
+  Payment: 'Payment',
   Product: 'Product',
   Seller: 'Seller',
   User: 'User'

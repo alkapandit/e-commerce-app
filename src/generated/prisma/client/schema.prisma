@@ -5,7 +5,7 @@ enum AddressType {
 }
 
 model Address {
-  id     String      @id @default(uuid())
+  id     String      @id @default(uuid()) @db.Uuid
   userId String      @db.Uuid
   type   AddressType
 
@@ -22,7 +22,8 @@ model Address {
   updatedAt DateTime @updatedAt
 
   // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders Order[]
 
   @@index([userId])
 }
@@ -30,7 +31,6 @@ model Address {
 model Buyer {
   id     String @id @default(uuid()) @db.Uuid
   userId String @unique @map("user_id") @db.Uuid
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   defaultShippingAddressId String?  @map("default_shipping_address_id")
   walletBalance            Decimal? @default(0) @map("wallet_balance")
@@ -39,21 +39,98 @@ model Buyer {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders Order[]
+
   @@map("buyers")
 }
 
-model Order {
-  id        String   @id @default(uuid())
-  userId    String   @db.Uuid
-  total     Float
-  createdAt DateTime @default(now())
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
 
-  user User @relation(fields: [userId], references: [id])
+model Order {
+  id          String      @id @default(uuid()) @db.Uuid
+  buyerId     String      @db.Uuid
+  status      OrderStatus @default(PENDING)
+  totalAmount Decimal     @db.Decimal(10, 2)
+  addressId   String      @db.Uuid
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  buyer      Buyer       @relation(fields: [buyerId], references: [id])
+  address    Address     @relation(fields: [addressId], references: [id])
+  orderItems OrderItem[]
+  payment    Payment?
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(uuid()) @db.Uuid
+  orderId   String  @db.Uuid
+  productId String  @db.Uuid
+  quantity  Int
+  price     Decimal @db.Decimal(10, 2)
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  UPI
+  NET_BANKING
+  CASH_ON_DELIVERY
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  orderId       String        @unique @db.Uuid
+  amount        Decimal       @db.Decimal(10, 2)
+  status        PaymentStatus @default(PENDING)
+  method        PaymentMethod
+  transactionId String?       @unique
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@map("payments")
 }
 
 model Product {
-  id   String  @id @default(uuid())
-  name String?
+  id          String   @id @default(uuid()) @db.Uuid
+  sellerId    String   @db.Uuid
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  stock       Int      @default(0)
+  images      String[]
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  seller     Seller      @relation(fields: [sellerId], references: [id])
+  orderItems OrderItem[]
+
+  @@map("products")
 }
 
 enum kycStatus {
@@ -71,7 +148,6 @@ model Seller {
   id String @id @default(uuid()) @db.Uuid
 
   userId String @unique @map("user_id") @db.Uuid
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   storeName        String? @map("strore_name")
   storeDescription String? @map("store_description")
@@ -94,6 +170,9 @@ model Seller {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products Product[]
 
   @@map("sellers")
 }
@@ -133,10 +212,8 @@ model User {
   createdAt   DateTime   @default(now()) @map("created_at")
   updatedAt   DateTime   @updatedAt @map("updated_at")
 
-  buyer  Buyer?
-  seller Seller?
-
-  orders    Order[]
+  buyer     Buyer?
+  seller    Seller?
   addresses Address[]
 
   @@map("users")
