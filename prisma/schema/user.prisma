@@ -35,8 +35,6 @@ model User {
 
   buyer  Buyer?
   seller Seller?
-
-  orders    Order[]
   addresses Address[]
 
   @@map("users")

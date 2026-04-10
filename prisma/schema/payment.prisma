@@ -15,7 +15,7 @@ enum PaymentMethod {
 
 model Payment {
   id            String        @id @default(cuid())
-  orderId       String        @unique
+  orderId       String        @unique @db.Uuid
   amount        Decimal       @db.Decimal(10, 2)
   status        PaymentStatus @default(PENDING)
   method        PaymentMethod
