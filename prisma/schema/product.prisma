@@ -1,17 +1,19 @@
 model Product {
-  id          String   @id @default(uuid()) @db.Uuid
-  sellerId    String   @db.Uuid
+  id          Int         @id @default(autoincrement())
+  sellerId    Int
   name        String
   description String?
-  price       Decimal  @db.Decimal(10, 2)
-  stock       Int      @default(0)
+  price       Decimal     @db.Decimal(10, 2)
+  stock       Int         @default(0)
   images      String[]
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
 
-  seller     Seller      @relation(fields: [sellerId], references: [id])
-  orderItems OrderItem[]
+  categoryId  Int
+  category    Category     @relation(fields: [categoryId], references: [id])
+  seller      Seller       @relation(fields: [sellerId], references: [id])
+  orderItems  OrderItem[]
 
   @@map("products")
 }

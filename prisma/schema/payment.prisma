@@ -14,8 +14,8 @@ enum PaymentMethod {
 }
 
 model Payment {
-  id            String        @id @default(cuid())
-  orderId       String        @unique @db.Uuid
+  id            Int           @id @default(autoincrement())
+  orderId       Int           @unique
   amount        Decimal       @db.Decimal(10, 2)
   status        PaymentStatus @default(PENDING)
   method        PaymentMethod
@@ -23,7 +23,7 @@ model Payment {
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 
-  order         Order         @relation(fields: [orderId], references: [id])
+  order Order @relation(fields: [orderId], references: [id])
 
   @@map("payments")
 }
