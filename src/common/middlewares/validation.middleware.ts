@@ -11,3 +11,14 @@ export const validateBody = (
   }
   next();
 };
+
+export const validateParam = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  if (!req.params) {
+    return next(new ApiError(400, "Invalid request param!"));
+  }
+  next();
+};
