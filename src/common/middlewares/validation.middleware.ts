@@ -22,3 +22,14 @@ export const validateParam = (
   }
   next();
 };
+
+export const validateQuery = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  if (!req.query) {
+    return next(new ApiError(400, "Invalid request query!"));
+  }
+  next();
+};
