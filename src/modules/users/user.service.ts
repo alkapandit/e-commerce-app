@@ -2,7 +2,7 @@ import prisma from "../../common/config/prisma";
 import { ApiError } from "../../common/utils/apiError.util";
 import { UpdateUserInput } from "./user.types";
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (id: number) => {
   const user = await prisma.user.findUnique({
     where: { id },
     select: {
@@ -23,7 +23,7 @@ export const getUserById = async (id: string) => {
 
   return user;
 };
-export const updateProfile = async (id: string, data: UpdateUserInput) => {
+export const updateProfile = async (id: number, data: UpdateUserInput) => {
   const user = await prisma.user.findUnique({ where: { id } });
   if (!user) {
     throw new ApiError(404, "User not found!");

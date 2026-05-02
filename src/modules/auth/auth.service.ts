@@ -105,8 +105,8 @@ export const login = async (data: LoginInput) => {
       throw new ApiError(401, "Invalid user credential!");
     }
 
-    const accessToken = generateAccessToken(user?.id);
-    const refreshToken = generateRefreshToken(user?.id);
+    const accessToken = generateAccessToken((user?.id).toString());
+    const refreshToken = generateRefreshToken((user?.id).toString());
 
     if (!accessToken || !refreshToken) {
       throw new ApiError(500, "Error in generating refresh and access token!");
