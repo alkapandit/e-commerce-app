@@ -185,12 +185,26 @@ exports.Prisma.ProductScalarFieldEnum = {
   name: 'name',
   description: 'description',
   price: 'price',
+  discountPrice: 'discountPrice',
+  sku: 'sku',
+  brand: 'brand',
   stock: 'stock',
   images: 'images',
+  tags: 'tags',
+  weight: 'weight',
+  dimensions: 'dimensions',
   isActive: 'isActive',
+  isFeatured: 'isFeatured',
+  categoryId: 'categoryId',
+  subCategoryId: 'subCategoryId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  categoryId: 'categoryId'
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProductVariantScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  name: 'name'
 };
 
 exports.Prisma.SellerScalarFieldEnum = {
@@ -233,9 +247,22 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.VariantOptionScalarFieldEnum = {
+  id: 'id',
+  variantId: 'variantId',
+  value: 'value',
+  price: 'price',
+  stock: 'stock'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -246,6 +273,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.AddressType = exports.$Enums.AddressType = {
   HOME: 'HOME',
@@ -310,8 +343,10 @@ exports.Prisma.ModelName = {
   OrderItem: 'OrderItem',
   Payment: 'Payment',
   Product: 'Product',
+  ProductVariant: 'ProductVariant',
   Seller: 'Seller',
-  User: 'User'
+  User: 'User',
+  VariantOption: 'VariantOption'
 };
 
 /**
