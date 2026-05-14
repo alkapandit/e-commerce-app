@@ -19,7 +19,7 @@ const dimensionsValidation = z.object({
 });
 
 // ✅ Main Product Schema
-export const addProductValidation = z.array(
+export const addProductValidationSchema = z.array(
   z.object({
     name: z.string().min(1, "Product name is required"),
 
