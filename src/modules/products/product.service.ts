@@ -246,4 +246,43 @@ export const updateProduct = async (product: UpdateProductInput) => {
   }
 };
 
-export const deleteProduct = async (id: string | string[]) => {};
+export const deleteProduct = async (ids: string[]) => {
+  const productIds = ids?.map((id) => Number(id));
+
+  if (!productIds || productIds?.length === 0 || productIds?.some(isNaN)) {
+    throw new ApiError(400, "Invalid product Ids!");
+  }
+
+  const existingProduct = await prisma.product.findMany({
+    where: { id: { in: productIds } },
+  });
+
+  if (
+    existingProduct?.length <= 0 ||
+    existingProduct?.length !== productIds.length
+  ) {
+    const missing = productIds.filter(
+      (id) => !existingProduct.some((p) => p.id === id),
+    );
+    throw new ApiError(404, `Products not found: ${missing.join(", ")}`);
+  }
+
+  try {
+    return await prisma.$transaction(async (tx) => {
+      await tx.productVariant.deleteMany({
+        where: { productId: { in: productIds } },
+      });
+      return tx.product.deleteMany({
+        where: { id: { in: productIds } },
+      });
+    });
+  } catch (err: any) {
+    if (err.code === "P2003") {
+      throw new ApiError(
+        409,
+        "Cannot delete: products are referenced by other records",
+      );
+    }
+    throw err;
+  }
+};
