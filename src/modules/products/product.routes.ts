@@ -13,7 +13,7 @@ import {
 
 const router = Router();
 
-router.get("/", validateQuery, ProductController.getAllProducts);
+router.get("/", ProductController.getAllProducts);
 router.get("/:id", validateParam, ProductController.getProductById);
 router.post(
   "/add",

@@ -1,8 +1,8 @@
+import { Request, Response } from "express";
 import * as ProductServices from "./product.service";
 import { HTTP_STATUS } from "../../constants/httpStatus.constant";
 import { sendResponse } from "../../common/utils/apiResponse.util";
 import { asyncHandler } from "../../common/utils/asyncHandler.util";
-import { Request, Response } from "express";
 
 export const getAllProducts = asyncHandler(
   async (req: Request, res: Response) => {

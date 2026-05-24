@@ -1,13 +1,12 @@
-import prisma from "../../common/config/prisma";
-import { ApiError } from "../../common/utils/apiError.util";
-import { Prisma } from "../../generated/prisma/client";
 import {
   AddProductInput,
-  ProductSearchQueryInput,
   UpdateProductInput,
+  ProductSearchQueryInput,
 } from "./product.types";
-
 import { ZodError } from "zod";
+import prisma from "../../common/config/prisma";
+import { Prisma } from "../../generated/prisma/client";
+import { ApiError } from "../../common/utils/apiError.util";
 
 export const getAllProducts = async (data: ProductSearchQueryInput) => {
   const {
@@ -74,7 +73,7 @@ export const getProductById = async (id: string) => {
   const productId = Number(id);
 
   if (isNaN(productId)) {
-    throw new ApiError(400, "Invalid product ID");
+    throw new ApiError(400, "Invalid product Id!");
   }
 
   const product = await prisma.product.findUnique({
@@ -82,7 +81,7 @@ export const getProductById = async (id: string) => {
   });
 
   if (!product) {
-    throw new ApiError(404, "Product not found");
+    throw new ApiError(404, "Product not found!");
   }
 
   return product;
